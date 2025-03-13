@@ -1,0 +1,37 @@
+.exam-card {
+    @apply p-4 rounded-[var(--rounded--md)] shadow-md border transition-shadow transition-transform duration-300 bg-[var(--body-bg)] min-h-[220px] transform ease-in-out;
+
+    &:hover {
+        @apply shadow-lg scale-105;
+    }
+
+    .exam-card-title {
+        @apply flex text-sm justify-between items-center mb-4 ;
+    }
+
+    .exam-title {
+        @apply text-[var(--primary-color)] font-semibold;
+    }
+
+    .date-range,
+    .duration,
+    .status {
+        @apply text-xs mb-2 text-[var(--primary-color)];
+    }
+
+    .duration span {
+        @apply font-bold;
+    }
+
+    .bookmark-icon {
+        @apply text-yellow-400 cursor-pointer;
+    }
+
+    .start-exam-button {
+        @apply w-full text-xs py-2 rounded-[var(--rounded--md)] border-none bg-[var(--accent-color)]
+    }
+
+    .exam-expired-message {
+        @apply text-xs my-2 text-red-500;
+    }
+}

@@ -1,0 +1,75 @@
+.search-exam {
+  @apply w-full bg-transparent md:w-1/3 p-2 border border-[var(--border-color)] hover:border-[var(--hover-color)] 
+  rounded-[var(--rounded--md)] text-xs;
+}
+
+.p-drawer-header {
+  @apply hidden;
+}
+.p-drawer-content {
+  @apply p-2;
+}
+.p-select-option {
+  @apply text-xs;
+}
+.p-select-dropdown {
+  .p-icon {
+    @apply h-2.5;
+  }
+}
+
+/* page-not-found */
+.page-not-found-container {
+  @apply flex min-h-screen items-center justify-center;
+
+  .page-not-found-card {
+    @apply flex flex-col items-center gap-8 p-10 md:p-20 rounded-2xl;
+  }
+
+  .page-not-found-header {
+    @apply flex flex-row items-center justify-center gap-4;
+  }
+
+  .page-not-found-number {
+    @apply font-bold text-[var(--primary-color)] text-8xl md:text-8xl;
+  }
+
+  .page-not-found-icon {
+    @apply flex items-center justify-center bg-[var(--primary-color)] text-[var(--body-bg)] rounded-full w-16 h-16 md:w-28 md:h-28;
+  }
+
+  .page-not-found-icon i {
+    @apply text-5xl md:text-6xl;
+  }
+
+  .page-not-found-message {
+    @apply font-bold text-center text-lg md:text-2xl border-t pt-8  ;
+  }
+
+  .page-not-found-button {
+    @apply text-sm bg-[var(--accent-color)] border-none;
+  }
+}
+.p-toast {
+    @apply w-80;
+}
+.p-toast-summary {
+    @apply text-sm;
+}
+.p-toast-detail {
+    @apply text-sm;
+}
+.p-toast-message-text {
+    @apply gap-0
+}
+.p-popover-content {
+    @apply bg-[var(--primary-color)] p-2 rounded-md
+}
+.p-button-danger {
+    .p-button-label, .p-button-icon {
+        @apply text-[var(--body-bg)]
+    }
+}
+.p-button-label {
+  @apply text-[var(--body-bg)]
+}

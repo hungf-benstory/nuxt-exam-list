@@ -1,0 +1,42 @@
+/* exam-list.scss */
+
+.exam-list {
+    @apply min-h-screen p-4 rounded-[var(--rounded--md)];
+
+    .exam-category-title {
+        @apply mb-4 font-semibold text-lg text-[var(--primary-color)];
+    }
+
+    .exams-card-container {
+        @apply grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4;
+    }
+
+    .pagination-controls {
+        @apply flex justify-end mt-4 text-xs;
+
+        .p-paginator {
+            
+            @apply text-xs bg-transparent p-0;
+            .p-select-option {
+                @apply text-xs
+            }
+        }
+    }
+
+    .p-paginator-page {
+        @apply text-xs
+    }
+    .p-paginator-rpp-dropdown {
+        @apply hidden;
+    }
+    .p-paginator-content {
+        @apply gap-0 text-xs bg-transparent
+    }
+    .p-paginator-page.p-paginator-page-selected {
+        @apply bg-[var(--accent-color)] text-[var(--body-bg)]
+    }
+    .p-paginator-page, .p-paginator-next, .p-paginator-last, .p-paginator-first, .p-paginator-prev {
+        @apply h-[32px] min-w-[32px] rounded-full
+    }
+
+}

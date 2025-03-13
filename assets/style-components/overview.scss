@@ -1,0 +1,60 @@
+.profile-container {
+    @apply flex items-center border rounded-[var(--rounded--md)] p-4 space-x-8 transition-colors;
+    border-color: var(--border-color);
+
+    .profile-section {
+        @apply flex items-center space-x-4 w-1/4;
+
+        .avatar {
+            @apply mr-2;
+            img {
+                @apply w-[64px] h-[64px] rounded-full
+            }
+        }
+
+        .profile-info {
+            @apply text-[var(--primary-color)] text-xs;
+
+            h3 {
+                @apply font-semibold text-lg;
+            }
+
+            .experience-info {
+                @apply text-xs;
+            }
+        }
+    }
+
+    .exams-count {
+        @apply text-center w-1/6 text-[var(--primary-color)];
+
+        h2 {
+            @apply text-xl font-bold ;
+        }
+
+        p {
+            @apply text-xs;
+        }
+    }
+
+    .notification-section {
+        @apply flex items-center bg-[var(--border-color)] rounded-[var(--rounded--md)] w-1/2 p-4; 
+
+        .logo {
+            @apply w-16 h-auto rounded-full;
+            filter: var(--filter-imge);
+        }
+
+        .notification {
+            @apply ml-4;
+
+            h3 {
+                @apply font-bold text-sm text-[var(--primary-color)];
+            }
+
+            p {
+                @apply text-red-500 text-xs;
+            }
+        }
+    }
+}

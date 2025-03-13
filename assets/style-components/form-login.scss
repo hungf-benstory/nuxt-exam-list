@@ -1,0 +1,104 @@
+.form-login-container {
+  @apply w-full h-full md:flex bg-[var(--body-bg)];
+  /* Switch to flex layout */
+
+  .form_login {
+    @apply flex-[0.5] flex justify-center w-full h-screen p-6 pt-12 md:px-20;
+    /* 0.7 flex grow */
+
+    .cbt-logo {
+      @apply mb-10;
+      filter: var(--filter-imge);
+    }
+
+    .form-content {
+      @apply flex flex-col gap-2 w-full sm:w-full;
+    }
+
+    .form-title {
+      @apply text-2xl font-bold mb-5 text-center md:text-left;
+    }
+
+    .input-icon {
+      @apply mt-[-2rem];
+    }
+
+    .input {
+      @apply shadow-none h-[42px] bg-transparent border border-[var(--border-color)] hover:border-[var(--hover-color)] 
+        rounded-[var(--rounded--md)] text-xs;
+    }
+
+    .label {
+      @apply text-xs text-[var(--primary-color)];
+    }
+
+    .message {
+      @apply min-h-[1.25rem] text-xs;
+    }
+
+    .password {
+      @apply border-[var(--border-color)] text-xs rounded-lg;
+    }
+
+    .p-message-error {
+      @apply bg-transparent outline-none shadow-none;
+    }
+
+    .forgot-password {
+      @apply text-xs cursor-pointer hover:underline;
+    }
+
+    .submit-button {
+      @apply text-xs w-full text-white border border-[var(--border-color)] p-3 rounded-lg transition-transform duration-500 hover:scale-y-110;
+    }
+  }
+
+  .login-image {
+    @apply flex-[1.3] h-screen w-full object-cover hidden md:block;
+    /* 1.3 flex grow */
+
+    @media (min-width: 1024px) {
+      clip-path: polygon(12% 0, 100% 0%, 100% 100%, 0 100%);
+    }
+  }
+
+  .password .p-inputtext {
+    @apply shadow-none h-[42px] bg-transparent border border-[var(--border-color)] hover:border-[var(--hover-color)] 
+  rounded-[var(--rounded--md)] text-xs;
+  }
+
+  .p-message {
+    @apply outline-none bg-none shadow-none;
+  }
+
+  .p-button-loading-icon {
+    @apply text-white;
+  }
+
+  .forgot-content {
+    @apply flex items-center justify-between text-xs gap-6;
+  }
+
+  .p-message-text {
+    @apply text-xs;
+  }
+
+  .p-toast-message {
+    @apply p-2.5;
+  }
+
+  @media (max-width: 1024px) {
+    .form_login {
+      @apply flex-1;
+    }
+  }
+
+  .btn-naver {
+    @apply flex justify-center items-center text-sm;
+
+    button {
+      @apply relative cursor-pointer bg-[#03cf5b] w-full text-white border-none my-2 px-8 py-3;
+      @apply rounded-lg hover:text-white hover:scale-y-110 duration-500 transform flex items-center justify-center;
+    }
+  }
+}

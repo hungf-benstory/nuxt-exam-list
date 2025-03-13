@@ -1,0 +1,52 @@
+@use "./style-components/overview.scss";
+@use "./style-components/all.scss";
+@use "./style-components/loading-spinner.scss";
+@use "./style-components/form-login.scss";
+@use "./style-components/layout.scss";
+@use "./style-components/exam-card.scss";
+@use "./style-components/exam-list.scss";
+@font-face {
+  font-family: "NotoSansKR";
+  src: url("@/assets/fonts/NotoSansKR.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+:root {
+  --primary-color:#334155;
+  --secondary-color: #64748b;
+  --border-color: #e2e8f0;
+  --text-color: #334155;
+  --body-bg: #f8fafc;
+  --hover-color: #334155;
+  --active-color: #e2e8f0;
+  --accent-color: #3B82F6;
+  --rounded--md: 0.4rem;
+  --bg-image : url("@/assets/images/bg_pattern.png");
+  --filter-imge : invert(0%) brightness(100%);
+  --spacing:0.25rem
+}
+
+:root[class='my-app-dark'] {
+  --primary-color:#ffff;
+  --secondary-color: #a1a1aa;
+  --border-color: #3f3f46;
+  --text-color: #a1a1aa;
+  --body-bg: #09090b;
+  --hover-color: #f1f5f9;
+  --active-color: #52525b;
+  --accent-color: #ffff; 
+  --bg-image : url("@/assets/images/bg_pattern.png"),
+  radial-gradient(50% 50% at center -25px, #fafafa 0%, #000 100%);
+  --filter-imge : invert(50%) brightness(250%);
+  --spacing: 0.25rem
+
+}
+body {
+  margin: 0px;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: var(--body-bg);
+  font-weight: normal;
+  color: var(--text-color);
+}
