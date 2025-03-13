@@ -1,3 +1,4 @@
+@use "tailwindcss-primeui";
 @use "./style-components/overview.scss";
 @use "./style-components/all.scss";
 @use "./style-components/loading-spinner.scss";
@@ -5,6 +6,7 @@
 @use "./style-components/layout.scss";
 @use "./style-components/exam-card.scss";
 @use "./style-components/exam-list.scss";
+
 @font-face {
   font-family: "NotoSansKR";
   src: url("@/assets/fonts/NotoSansKR.ttf") format("truetype");
@@ -19,7 +21,7 @@
   --body-bg: #f8fafc;
   --hover-color: #334155;
   --active-color: #e2e8f0;
-  --accent-color: #3B82F6;
+  --accent-color: #00c951;
   --rounded--md: 0.4rem;
   --bg-image : url("@/assets/images/bg_pattern.png");
   --filter-imge : invert(0%) brightness(100%);
@@ -39,7 +41,6 @@
   radial-gradient(50% 50% at center -25px, #fafafa 0%, #000 100%);
   --filter-imge : invert(50%) brightness(250%);
   --spacing: 0.25rem
-
 }
 body {
   margin: 0px;

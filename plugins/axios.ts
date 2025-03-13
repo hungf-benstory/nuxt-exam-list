@@ -3,7 +3,6 @@ import { useToast } from "primevue/usetoast";
 export default defineNuxtPlugin((nuxtApp) => {
   const config = useRuntimeConfig();
   const toast = useToast()
-
   // Create an Axios instance with a base URL
   const api = axios.create({
     baseURL: config.public.apiBaseUrl,

@@ -1,20 +1,17 @@
-// middleware/auth.ts
 export default defineNuxtRouteMiddleware((to, from) => {
-  const user = useCookie('userInfo');  // Retrieve user info from cookies
-  const accessToken = useCookie('access_token');  // Retrieve access token from cookies
+  const user = useCookie('userInfo');  // Lấy thông tin người dùng từ cookie
+  const accessToken = useCookie('access_token');  // Lấy access token từ cookie
 
-  // If the user is trying to access /login but is already logged in, redirect to /exam-list
-  if ((to.path === '/login' || to.path === '/') && accessToken.value) {
-    return navigateTo('/exam-list');
+  // Nếu người dùng đã đăng nhập và đang cố gắng truy cập /login hoặc /, điều hướng đến /exam-list
+  if ((to.path === '/login' || to.path === '/') && accessToken?.value) {
+    if (from.path !== '/exam-list') { // Điều kiện dừng redirect
+      return navigateTo('/exam-list');
+    }
+    return; // Ngăn chặn vòng lặp redirect
   }
 
-  // If the user is not logged in, redirect to the login page
-  if (!accessToken.value) {
+  // Nếu người dùng chưa đăng nhập và không truy cập /login, điều hướng đến /login
+  if (!accessToken.value && to.path !== '/login') {
     return navigateTo('/login');
   }
-
-  // Optionally, check user-specific data or permissions
-  // if (!user.value || !userHasPermission(user.value)) {
-  //   return navigateTo('/forbidden');
-  // }
 });

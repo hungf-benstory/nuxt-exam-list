@@ -71,5 +71,6 @@
     }
 }
 .p-button-label {
-  @apply text-[var(--body-bg)]
+  @apply text-black
+  // [var(--body-bg)]
 }

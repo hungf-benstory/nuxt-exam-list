@@ -13,7 +13,7 @@ const sidebarMenus = ref(mockMenu);
 const activeSubItem = ref(null);
 
 const router = useRouter();
-const route = useRoute(); 
+const route = useRoute();
 
 // Handle event when a menu is clicked
 const handleMenuClick = (menu, index) => {
@@ -31,7 +31,7 @@ const handleMenuClick = (menu, index) => {
     emit("toggleDrawerSideBar");
     if (menu.url) {
       // Navigate to the menu's URL
-      router.push(menu.url); 
+      router.push(menu.url);
     }
   }
 };
@@ -43,14 +43,14 @@ const handleSubItemClick = (subItem) => {
   if (subItem.url) {
     emit("toggleDrawerSideBar");
     // Navigate to the subItem's URL
-    router.push(subItem.url); 
+    router.push(subItem.url);
   }
 };
 
 // Function to check if the current subItem URL is active
 const isSubItemActive = (subItem) => {
   // Compare the current route with the subItem's URL
-  return route.path === subItem.url; 
+  return route.path === subItem.url;
 };
 </script>
 
@@ -85,7 +85,7 @@ const isSubItemActive = (subItem) => {
                 : 'inactive-submenu-item',
             ]"
           >
-            <router-link :to="subItem.url">{{ subItem.name }}</router-link>
+            <NuxtLink :to="subItem.url">{{ subItem.name }}</NuxtLink>
           </li>
         </ul>
       </li>

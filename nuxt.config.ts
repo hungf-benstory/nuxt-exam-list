@@ -18,7 +18,6 @@ export default defineNuxtConfig({
           defer: true
         }
       ],
-
     }
   },
   modules: [
@@ -35,7 +34,7 @@ export default defineNuxtConfig({
         options: {
           cssLayer: {
             name: "primevue",
-            order: "primevue,base"
+            order: "primevue,base,tailwindcss-primeui"
           },
           darkModeSelector: ".my-app-dark",
         },
@@ -45,7 +44,7 @@ export default defineNuxtConfig({
   },
   css: ["~/assets/main.scss", "primeicons/primeicons.css", "tailwindcss-primeui"],
 
-  // Axios cấu hình cho API
+  // Axios configuration for API
   runtimeConfig: {
     public: {
       apiBaseUrl: process.env.API_BASE_URL || 'https://api.example.com',
@@ -53,7 +52,7 @@ export default defineNuxtConfig({
   },
 
   plugins: [
-    '~/plugins/axios.ts',  // Thêm plugin axios
+    '~/plugins/axios.ts',  // Add axios plugin
   ],
 
 })

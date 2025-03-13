@@ -1,5 +1,4 @@
 
-//pinia vue3 composition api
 import { ref } from "vue";
 import { defineStore } from "pinia";
 
