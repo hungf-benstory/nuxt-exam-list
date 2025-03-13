@@ -3,6 +3,8 @@ definePageMeta({
   layout: "main-layout",
   middleware: "auth",
 });
+const { $api } = useNuxtApp();
+const { data } = await $api.get("/your-endpoint");
 
 import ExamCard from "@/components/ExamCard.vue";
 import { computed } from "vue";

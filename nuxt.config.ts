@@ -1,12 +1,13 @@
-// nuxt.config.ts
+// https://nuxt.com/docs/api/configuration/nuxt-config
+import Aura from '@primeuix/themes/aura';
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: false },
   app: {
     head: {
-      title: 'CBT Exam',
+      title: 'My Nuxt App',
       meta: [
-        { name: 'description', content: 'CBT exam-list' },
+        { name: 'description', content: 'Ứng dụng Nuxt 3 với TailwindCSS, Pinia và PrimeVue' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       ],
       script: [
@@ -14,22 +15,45 @@ export default defineNuxtConfig({
           src: 'https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js',
           type: 'text/javascript',
           async: true,
-          defer: true,
-        },
+          defer: true
+        }
       ],
-    },
+
+    }
   },
   modules: [
     '@pinia/nuxt',
     '@nuxtjs/tailwindcss',
     '@primevue/nuxt-module',
-    'nuxt-lodash',
+    "nuxt-lodash"
   ],
-  css: ['~/assets/main.scss', 'primeicons/primeicons.css', 'tailwindcss-primeui'],
+  primevue: {
+    autoImport: true,
+    options: {
+      theme: {
+        preset: Aura,
+        options: {
+          cssLayer: {
+            name: "primevue",
+            order: "primevue,base"
+          },
+          darkModeSelector: ".my-app-dark",
+        },
+      },
 
+    }
+  },
+  css: ["~/assets/main.scss", "primeicons/primeicons.css", "tailwindcss-primeui"],
+
+  // Axios cấu hình cho API
   runtimeConfig: {
     public: {
       apiBaseUrl: process.env.API_BASE_URL || 'https://api.example.com',
     },
   },
+
+  plugins: [
+    '~/plugins/axios.ts',  // Thêm plugin axios
+  ],
+
 })
