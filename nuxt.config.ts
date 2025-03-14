@@ -39,7 +39,6 @@ export default defineNuxtConfig({
           darkModeSelector: ".my-app-dark",
         },
       },
-
     }
   },
   css: ["~/assets/main.scss", "primeicons/primeicons.css", "tailwindcss-primeui"],
@@ -47,7 +46,7 @@ export default defineNuxtConfig({
   // Axios configuration for API
   runtimeConfig: {
     public: {
-      apiBaseUrl: process.env.API_BASE_URL || 'https://api.example.com',
+      apiBaseUrl: process.env.API_BASE_URL || 'http://localhost:3000/',
     },
   },
 

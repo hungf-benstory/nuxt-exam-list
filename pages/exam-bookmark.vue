@@ -3,68 +3,141 @@ definePageMeta({
   layout: "main-layout",
   middleware: "auth",
 });
-const { $api } = useNuxtApp();
-const { data } = await $api.get("/your-endpoint");
-
 import ExamCard from "@/components/ExamCard.vue";
-import { computed } from "vue";
-import { useExamStore } from "@/stores/useExamStore";
+import { ref, computed, onMounted } from "vue";
+const toast = useToast();
+const exams = ref([]);
+const categories = ref([]);
+const pending = ref(false);
+const error = ref(null);
 
-// data store
-const examStore = useExamStore();
+const fetchExamsAndCategories = async () => {
+  pending.value = true;
+  try {
+    // api list exams
+    const { data: examsData } = await $fetch("/api/exams", {
+      method: "GET",
+      key: new Date().getTime(),
+    });
 
-// bookmarked exams
-const bookmarkedExams = computed(() =>
-  // Use reduce to gather categories with bookmarked exams
-  examStore.categories.reduce((result, category) => {
-    // filter exams of category and are bookmarked
-    const items = examStore.exams.filter(
+    exams.value = examsData || [];
+
+    // get api categories
+    const { data: categoriesData } = await $fetch("/api/categories", {
+      method: "GET",
+      key: new Date().getTime(),
+    });
+
+    categories.value = categoriesData || [];
+  } catch (err) {
+    error.value = err.message || "Error fetching data";
+    console.error("Error fetching data:", error.value);
+  } finally {
+    setTimeout(() => {
+      pending.value = false;
+    }, 600);
+  }
+};
+
+// Call api
+onMounted(() => {
+  fetchExamsAndCategories();
+});
+
+// Data exam bookmarked
+const bookmarkedExams = computed(() => {
+  return categories.value.reduce((result, category) => {
+    // Filter exam by categoryId
+    const items = exams.value.filter(
       (exam) => exam.categoryId === category.id && exam.bookmark
     );
 
-    // Add category if it has bookmarked exams
+    // Add category if exam bookmarked
     if (items.length > 0) {
       result.push({ ...category, items });
     }
 
     return result;
-  }, [])
-);
+  }, []);
+});
 
-// Function to update the bookmark status of an exam
-const updateBookmark = (updateExam) => {
-  examStore.updateBookmark(updateExam);
+// Function update status bookmark
+const updateBookmark = async (exam) => {
+  pending.value = true;
+
+  try {
+    // Send request to update status bookmark
+    const response = await $fetch(`/api/exams`, {
+      method: "PATCH",
+      body: { id: exam.id, bookmark: !exam.bookmark },
+    });
+
+    // Update list bookmarked when success
+    if (response.success) {
+      // Find exam by id need update
+      const examIndex = exams.value.findIndex((e) => e.id === exam.id);
+      if (examIndex !== -1) {
+        // Update status bookmarked
+        exams.value[examIndex].bookmark = !exams.value[examIndex].bookmark;
+      }
+      toast.add({
+        severity: "success",
+        summary: "Success",
+        detail: response?.message,
+        life: 3000,
+      });
+    }
+  } catch (error) {
+    console.error("Failed to update bookmark:", error);
+  }
+  setTimeout(() => {
+    pending.value = false;
+  }, 600);
 };
 </script>
 
 <template>
   <div class="exam-list">
-    <div v-if="bookmarkedExams.length > 0">
-      <!-- Show list of bookmarked exams -->
+    <!-- Show skeleton when loading data -->
+    <div v-if="pending" class="w-full h-full items-center justify-between">
+      <Skeleton width="10rem" height="2rem" class="mb-2"></Skeleton>
+      <div class="exams-card-container">
+        <Skeleton height="220px"></Skeleton>
+        <Skeleton height="220px"></Skeleton>
+        <Skeleton height="220px"></Skeleton>
+        <Skeleton height="220px"></Skeleton>
+      </div>
+      <Skeleton width="10rem" height="2rem" class="mb-2 mt-10"></Skeleton>
+      <div class="exams-card-container">
+        <Skeleton height="220px"></Skeleton>
+        <Skeleton height="220px"></Skeleton>
+        <Skeleton height="220px"></Skeleton>
+        <Skeleton height="220px"></Skeleton>
+      </div>
+    </div>
+
+    <!-- exam bookmarked -->
+    <div v-else>
       <div
         class="py-6"
         v-for="(examCategory, index) in bookmarkedExams"
         :key="index"
       >
-        <!-- Section Title -->
+        <!-- Categories -->
         <h2 class="exam-category-title">
           {{ examCategory.category }}
         </h2>
 
-        <!-- Render ExamCards -->
+        <!-- Show ExamCards -->
         <div class="exams-card-container">
           <ExamCard
             v-for="exam in examCategory.items"
             :key="exam.id"
             :exam="exam"
-            @update-bookmark="updateBookmark"
+            @update-bookmark="updateBookmark(exam)"
           />
         </div>
       </div>
-    </div>
-    <div v-else class="text-center">
-      <!-- No exams bookmarked -->
-      No exams have been bookmarked.
     </div>
   </div>
 </template>

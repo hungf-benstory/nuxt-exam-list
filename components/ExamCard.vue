@@ -12,12 +12,13 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  fetchExams: Function,
 });
 
 // Emit bookmark update
-const emit = defineEmits(["update-bookmark"]);
+const emit = defineEmits(["update-bookmark", "fetchExams"]);
 const toggleBookmark = () => {
-  emit("update-bookmark", { ...props.exam, bookmark: !props.exam.bookmark });
+  emit("update-bookmark", { ...props.exam, bookmark: props.exam.bookmark });
 };
 
 // Check if the exam end date has passed
@@ -59,6 +60,22 @@ const startExam = () => {
     life: 3000,
   });
   isLoading.value = false;
+};
+
+const onDelete = async (id) => {
+  const { data, error } = await useFetch("/api/exams", {
+    method: "DELETE",
+    body: {
+      id: id,
+    },
+  });
+
+  if (error.value) {
+    console.error("Error ", error.value);
+  } else {
+    console.log("Exam dell:", data.value);
+    emit("fetchExams");
+  }
 };
 </script>
 

@@ -58,7 +58,7 @@ const handleLogout = () => {
   accessTokenCookie.value = null; // This removes the 'access_token' cookie
 
   // Optionally clear localStorage if needed
-  localStorage.removeItem("notes");
+  // localStorage.removeItem("notes");
 
   // Redirect to login page
   router.push("/login");

@@ -1,4 +1,3 @@
-
 import { ref } from "vue";
 import { defineStore } from "pinia";
 
@@ -7,22 +6,22 @@ import categoryExam from "@/mock/categoryExam.js";
 import examList from "@/mock/examList.js";
 
 export const useExamStore = defineStore("examStore", () => {
+  // Check if running on the client side
+  const getLocalStorageItem = (key, fallback) => {
+    if (typeof window !== "undefined" && window.localStorage) {
+      return JSON.parse(localStorage.getItem(key)) || fallback;
+    }
+    return fallback;
+  };
+
   // state
-  const categories = ref(
-    process.client
-      ? JSON.parse(localStorage.getItem("categories")) || categoryExam
-      : categoryExam
-  );
-  const exams = ref(
-    process.client
-      ? JSON.parse(localStorage.getItem("exams")) || examList
-      : examList
-  );
+  const categories = ref(getLocalStorageItem("categories", categoryExam));
+  const exams = ref(getLocalStorageItem("exams", examList));
 
   // Action update exam-list
   const setExamList = (newExams) => {
     exams.value = newExams;
-    if (process.client) {
+    if (typeof window !== "undefined" && window.localStorage) {
       localStorage.setItem("exams", JSON.stringify(newExams));
     }
   };
@@ -32,7 +31,7 @@ export const useExamStore = defineStore("examStore", () => {
     exams.value = exams.value.map((exam) =>
       exam.id === examBookmark.id ? examBookmark : exam
     );
-    if (process.client) {
+    if (typeof window !== "undefined" && window.localStorage) {
       localStorage.setItem("exams", JSON.stringify(exams.value));
     }
   };
