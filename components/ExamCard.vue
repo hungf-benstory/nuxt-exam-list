@@ -12,11 +12,10 @@ const props = defineProps({
     type: Object,
     required: true,
   },
-  fetchExams: Function,
 });
 
 // Emit bookmark update
-const emit = defineEmits(["update-bookmark", "fetchExams"]);
+const emit = defineEmits(["update-bookmark"]);
 const toggleBookmark = () => {
   emit("update-bookmark", { ...props.exam, bookmark: props.exam.bookmark });
 };
@@ -74,7 +73,6 @@ const onDelete = async (id) => {
     console.error("Error ", error.value);
   } else {
     console.log("Exam dell:", data.value);
-    emit("fetchExams");
   }
 };
 </script>

@@ -5,79 +5,93 @@ definePageMeta({
 });
 import ExamCard from "@/components/ExamCard.vue";
 import { ref, computed, onMounted } from "vue";
+import { API_ENDPOINTS } from "~/utils/api";
+const { $api } = useNuxtApp();
 const toast = useToast();
 const exams = ref([]);
 const categories = ref([]);
 const pending = ref(false);
 const error = ref(null);
 
-const fetchExamsAndCategories = async () => {
+const fetchExams = async () => {
   pending.value = true;
   try {
-    // api list exams
-    const { data: examsData } = await $fetch("/api/exams", {
-      method: "GET",
-      key: new Date().getTime(),
+    const endpoint = API_ENDPOINTS.exams.getExams;
+    // Call API
+    const response = await $api({
+      url: endpoint.url, // API url
+      method: endpoint.method,
     });
-
-    exams.value = examsData || [];
-
-    // get api categories
-    const { data: categoriesData } = await $fetch("/api/categories", {
-      method: "GET",
-      key: new Date().getTime(),
-    });
-
-    categories.value = categoriesData || [];
-  } catch (err) {
-    error.value = err.message || "Error fetching data";
-    console.error("Error fetching data:", error.value);
-  } finally {
-    setTimeout(() => {
-      pending.value = false;
-    }, 600);
+    exams.value = response.data.data;
+  } catch (error) {
+    console.error(error);
   }
+  setTimeout(() => {
+    pending.value = false;
+  }, 600);
+};
+
+const fetchCategories = async () => {
+  pending.value = true;
+  try {
+    const endpoint = API_ENDPOINTS.exams.getCategories;
+    // Call API
+    const response = await $api({
+      url: endpoint.url, // API url
+      method: endpoint.method,
+    });
+    categories.value = response.data.data;
+  } catch (error) {
+    console.error(error);
+  }
+  setTimeout(() => {
+    pending.value = false;
+  }, 600);
 };
 
 // Call api
 onMounted(() => {
-  fetchExamsAndCategories();
+  fetchExams();
+  fetchCategories();
 });
 
 // Data exam bookmarked
 const bookmarkedExams = computed(() => {
-  return categories.value.reduce((result, category) => {
-    // Filter exam by categoryId
-    const items = exams.value.filter(
-      (exam) => exam.categoryId === category.id && exam.bookmark
-    );
+  return categories.value.reduce(
+    (result, category) => {
+      // Filter exam by categoryId
+      const items = exams.value.filter(
+        (exam) => exam.categoryId === category.id && exam.bookmark
+      );
 
-    // Add category if exam bookmarked
-    if (items.length > 0) {
-      result.push({ ...category, items });
-    }
+      // Add category if exam bookmarked
+      if (items.length > 0) {
+        result.push({ ...category, items });
+      }
 
-    return result;
-  }, []);
+      return result;
+    },
+    [categories]
+  );
 });
 
 // Function update status bookmark
 const updateBookmark = async (exam) => {
-  pending.value = true;
-
   try {
-    // Send request to update status bookmark
-    const response = await $fetch(`/api/exams`, {
-      method: "PATCH",
-      body: { id: exam.id, bookmark: !exam.bookmark },
+    const endpoint = API_ENDPOINTS.exams.updateBookmark;
+
+    // Call API
+    const response = await $api({
+      url: endpoint.url, // API url
+      method: endpoint.method,
+      data: { id: exam.id, bookmark: !exam.bookmark },
     });
 
-    // Update list bookmarked when success
-    if (response.success) {
-      // Find exam by id need update
+    if (response.status === 200) {
+      // Find exam by id
       const examIndex = exams.value.findIndex((e) => e.id === exam.id);
       if (examIndex !== -1) {
-        // Update status bookmarked
+        // Update the bookmark status of the exam
         exams.value[examIndex].bookmark = !exams.value[examIndex].bookmark;
       }
       toast.add({
@@ -88,11 +102,8 @@ const updateBookmark = async (exam) => {
       });
     }
   } catch (error) {
-    console.error("Failed to update bookmark:", error);
+    console.error(error);
   }
-  setTimeout(() => {
-    pending.value = false;
-  }, 600);
 };
 </script>
 

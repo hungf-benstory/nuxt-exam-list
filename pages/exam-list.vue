@@ -10,6 +10,8 @@ import SearchExam from "@/components/SearchExam.vue";
 import { ref, computed, onMounted } from "vue";
 import Paginator from "primevue/paginator";
 import { filter, includes, toLower } from "lodash";
+import { API_ENDPOINTS } from "~/utils/api";
+const { $api } = useNuxtApp();
 const toast = useToast();
 const pageState = ref({});
 const rowsPerPageState = ref({});
@@ -21,34 +23,47 @@ const categories = ref([]);
 const pending = ref(false);
 const error = ref(null);
 
-const fetchExamsAndCategories = async () => {
+const fetchExams = async () => {
   pending.value = true;
   try {
-    const { data: examsData } = await $fetch("/api/exams", {
-      method: "GET",
-      key: new Date().getTime(),
+    const endpoint = API_ENDPOINTS.exams.getExams;
+    // Call API
+    const response = await $api({
+      url: endpoint.url, // API url
+      method: endpoint.method,
     });
-
-    exams.value = examsData || [];
-
-    // api categories
-    const { data: categoriesData } = await $fetch("/api/categories", {
-      method: "GET",
-      key: new Date().getTime(),
-    });
-
-    categories.value = categoriesData || [];
-  } catch (err) {
-    error.value = err.message || "Error fetching data";
-  } finally {
-    setTimeout(() => {
-      pending.value = false;
-    }, 600);
+    exams.value = response.data.data;
+  } catch (error) {
+    console.error(error);
   }
+  setTimeout(() => {
+    pending.value = false;
+  }, 600);
 };
 
+const fetchCategories = async () => {
+  pending.value = true;
+  try {
+    const endpoint = API_ENDPOINTS.exams.getCategories;
+
+    // Call API
+    const response = await $api({
+      url: endpoint.url, // API url
+      method: endpoint.method,
+    });
+    categories.value = response.data.data;
+  } catch (error) {
+    console.error(error);
+  }
+  setTimeout(() => {
+    pending.value = false;
+  }, 600);
+};
+
+// Call api
 onMounted(() => {
-  fetchExamsAndCategories();
+  fetchExams();
+  fetchCategories();
 });
 
 // Filter exams by category
@@ -84,14 +99,16 @@ const getTotalRecords = (categoryId) => {
 
 const updateBookmark = async (exam) => {
   try {
-    const response = await $fetch(`/api/exams`, {
-      method: "PATCH",
-      body: { id: exam.id, bookmark: !exam.bookmark },
+    const endpoint = API_ENDPOINTS.exams.updateBookmark;
+
+    // Call API
+    const response = await $api({
+      url: endpoint.url, // API url
+      method: endpoint.method,
+      data: { id: exam.id, bookmark: !exam.bookmark },
     });
 
-    // Update exam-list
-    if (response.success) {
-      console.log("response", response);
+    if (response.status === 200) {
       // Find exam by id
       const examIndex = exams.value.findIndex((e) => e.id === exam.id);
       if (examIndex !== -1) {
@@ -106,7 +123,7 @@ const updateBookmark = async (exam) => {
       });
     }
   } catch (error) {
-    console.error("Failed to update bookmark:", error);
+    console.error(error);
   }
 };
 </script>
@@ -155,7 +172,6 @@ const updateBookmark = async (exam) => {
           :key="exam.id"
           :exam="exam"
           @update-bookmark="updateBookmark"
-          @fetchExams="fetchExamsAndCategories"
         />
       </div>
 
