@@ -1,6 +1,6 @@
 import { getMethod, readBody } from 'h3';
 
-// Data mẫu
+// Data test
 let examList = [
   {
     id: 1,

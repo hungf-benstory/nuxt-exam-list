@@ -118,7 +118,7 @@ const updateBookmark = async (exam) => {
       toast.add({
         severity: "success",
         summary: "Success",
-        detail: response?.message,
+        detail: response?.data?.message,
         life: 3000,
       });
     }
@@ -138,7 +138,11 @@ const updateBookmark = async (exam) => {
 
     <!-- Search bar -->
     <div class="my-4">
-      <SearchExam v-model="searchQuery" placeholder="Search exam..." />
+      <SearchExam
+        v-model="searchQuery"
+        v-model:pending="pending"
+        placeholder="Search exam..."
+      />
     </div>
 
     <!-- Display loading spinner while pending -->

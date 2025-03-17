@@ -1,7 +1,6 @@
 <script setup>
 import { onMounted } from "vue";
 import { useRouter } from "vue-router";
-// import Cookies from "js-cookie";
 import { useToast } from "primevue/usetoast";
 
 const router = useRouter();
@@ -47,14 +46,6 @@ onMounted(() => {
         const userInfo = naverLogin.user;
 
         if (userInfo) {
-          // Save user info and token to cookies
-          // Cookies.set("userInfo", JSON.stringify(userInfo), {
-          //   path: "/",
-          //   expires: 7,
-          // });
-          // Cookies.set("access_token", accessToken, { path: "/", expires: 7 });
-
-          // Show success message
           toast.add({
             severity: "success",
             summary: "Success",

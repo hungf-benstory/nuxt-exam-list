@@ -6,8 +6,8 @@ export const sidebarMenu = [
     subItems: [
       { name: 'List', url: '/exam-list' },
       { name: 'Bookmark', url: '/exam-bookmark' },
-      { name: 'Playground', url: '/exam-playground' },
-      { name: 'Support', url: '/exam-support' },
+      { name: 'Playground' },
+      { name: 'Support' },
     ]
   },
   {
