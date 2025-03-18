@@ -17,59 +17,66 @@ const pageState = ref({});
 const rowsPerPageState = ref({});
 const defaultRowsPerPage = 4;
 const searchQuery = ref("");
-
-const exams = ref([]);
-const categories = ref([]);
 const pending = ref(false);
 const error = ref(null);
 
-const fetchExams = async () => {
-  pending.value = true;
-  try {
+// const fetchExams = async () => {
+//   pending.value = true;
+//   try {
+//     const endpoint = API_ENDPOINTS.exams.getExams;
+//     // Call API
+//     const response = await $api({
+//       url: endpoint.url, // API url
+//       method: endpoint.method,
+//     });
+//     exams.value = response.data.data;
+//   } catch (error) {
+//     console.error(error);
+//   }
+//   setTimeout(() => {
+//     pending.value = false;
+//   }, 600);
+// };
+
+const { data: examsData, error: examsError } = await useAsyncData(
+  "apiExams",
+  async () => {
     const endpoint = API_ENDPOINTS.exams.getExams;
-    // Call API
-    const response = await $api({
-      url: endpoint.url, // API url
-      method: endpoint.method,
-    });
-    exams.value = response.data.data;
-  } catch (error) {
-    console.error(error);
+    try {
+      const response = await $api({
+        url: endpoint.url,
+        method: endpoint.method,
+      });
+      return response.data.data; // Trả về dữ liệu
+    } catch (error) {
+      console.error("Lỗi khi tải dữ liệu exams:", error);
+      return null; // Trả về null nếu lỗi
+    }
   }
-  setTimeout(() => {
-    pending.value = false;
-  }, 600);
-};
+);
 
-const fetchCategories = async () => {
-  pending.value = true;
-  try {
+// Fetch categories data
+const { data: categoriesData, error: categoriesError } = await useAsyncData(
+  "apiCategories",
+  async () => {
     const endpoint = API_ENDPOINTS.exams.getCategories;
-
-    // Call API
-    const response = await $api({
-      url: endpoint.url, // API url
-      method: endpoint.method,
-    });
-    categories.value = response.data.data;
-  } catch (error) {
-    console.error(error);
+    try {
+      const response = await $api({
+        url: endpoint.url,
+        method: endpoint.method,
+      });
+      return response.data.data; // Trả về dữ liệu
+    } catch (error) {
+      console.error("Lỗi khi tải dữ liệu categories:", error);
+      return null; // Trả về null nếu lỗi
+    }
   }
-  setTimeout(() => {
-    pending.value = false;
-  }, 600);
-};
-
-// Call api
-onMounted(() => {
-  fetchExams();
-  fetchCategories();
-});
+);
 
 // Filter exams by category
 const getFilteredExams = (categoryId) => {
   return filter(
-    exams.value,
+    examsData.value,
     (exam) =>
       exam.categoryId === categoryId &&
       includes(toLower(exam.title), toLower(searchQuery.value))
@@ -110,10 +117,11 @@ const updateBookmark = async (exam) => {
 
     if (response.status === 200) {
       // Find exam by id
-      const examIndex = exams.value.findIndex((e) => e.id === exam.id);
+      const examIndex = examsData.value.findIndex((e) => e.id === exam.id);
       if (examIndex !== -1) {
         // Update the bookmark status of the exam
-        exams.value[examIndex].bookmark = !exams.value[examIndex].bookmark;
+        examsData.value[examIndex].bookmark =
+          !examsData.value[examIndex].bookmark;
       }
       toast.add({
         severity: "success",
@@ -164,7 +172,7 @@ const updateBookmark = async (exam) => {
     </div>
 
     <!-- Loop through each exam category -->
-    <div v-else v-for="(category, index) in categories" :key="index">
+    <div v-else v-for="(category, index) in categoriesData" :key="index">
       <h2 class="exam-category-title">
         {{ index + 1 }}. {{ category.category }}
       </h2>
