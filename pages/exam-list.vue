@@ -47,10 +47,10 @@ const { data: examsData, error: examsError } = await useAsyncData(
         url: endpoint.url,
         method: endpoint.method,
       });
-      return response.data.data; // Trả về dữ liệu
+      return response.data.data;
     } catch (error) {
-      console.error("Lỗi khi tải dữ liệu exams:", error);
-      return null; // Trả về null nếu lỗi
+      console.error("error:", error);
+      return null;
     }
   }
 );
@@ -65,10 +65,10 @@ const { data: categoriesData, error: categoriesError } = await useAsyncData(
         url: endpoint.url,
         method: endpoint.method,
       });
-      return response.data.data; // Trả về dữ liệu
+      return response.data.data;
     } catch (error) {
-      console.error("Lỗi khi tải dữ liệu categories:", error);
-      return null; // Trả về null nếu lỗi
+      console.error("error:", error);
+      return null;
     }
   }
 );
