@@ -10,7 +10,7 @@ import SearchExam from "@/components/SearchExam.vue";
 import { ref, computed, onMounted } from "vue";
 import Paginator from "primevue/paginator";
 import { filter, includes, toLower } from "lodash";
-import { API_ENDPOINTS } from "~/utils/api";
+import { API_ENDPOINTS } from "@/utils/api";
 const { $api } = useNuxtApp();
 const toast = useToast();
 const pageState = ref({});
@@ -20,44 +20,23 @@ const searchQuery = ref("");
 const pending = ref(false);
 const error = ref(null);
 
-// const fetchExams = async () => {
-//   pending.value = true;
-//   try {
-//     const endpoint = API_ENDPOINTS.exams.getExams;
-//     // Call API
-//     const response = await $api({
-//       url: endpoint.url, // API url
-//       method: endpoint.method,
-//     });
-//     exams.value = response.data.data;
-//   } catch (error) {
-//     console.error(error);
-//   }
-//   setTimeout(() => {
-//     pending.value = false;
-//   }, 600);
-// };
-
-const { data: examsData, error: examsError } = await useAsyncData(
-  "apiExams",
-  async () => {
-    const endpoint = API_ENDPOINTS.exams.getExams;
-    try {
-      const response = await $api({
-        url: endpoint.url,
-        method: endpoint.method,
-      });
-      return response.data.data;
-    } catch (error) {
-      console.error("error:", error);
-      return null;
-    }
+// Fetch exams data
+const { data: examsData, error: examsError } = await useAsyncData(async () => {
+  const endpoint = API_ENDPOINTS.exams.getExams;
+  try {
+    const response = await $api({
+      url: endpoint.url,
+      method: endpoint.method,
+    });
+    return response.data.data;
+  } catch (error) {
+    console.error("error:", error);
+    return null;
   }
-);
+});
 
 // Fetch categories data
 const { data: categoriesData, error: categoriesError } = await useAsyncData(
-  "apiCategories",
   async () => {
     const endpoint = API_ENDPOINTS.exams.getCategories;
     try {

@@ -63,7 +63,7 @@
     }
   }
 
-  .search-icon-container, .icon-wrapper, .menu-icon-container {
+  .search-icon-container, .icon-wrapper {
     @apply flex items-center justify-center w-7 h-7 text-[var(--primary-color)] border border-[var(--border-color)] rounded-[var(--rounded--md)] hover:border-[var(--hover-color)] cursor-pointer transition-all duration-200;
   }
   .search-icon-container {
@@ -143,5 +143,11 @@
   .menu-icon-container {
     @apply hidden;
   }
+}
+
+@media screen and (max-width: 1025px) {
+  .menu-icon-container {
+      @apply flex items-center justify-center w-7 h-7 text-[var(--primary-color)] border border-[var(--border-color)] rounded-[var(--rounded--md)] hover:border-[var(--hover-color)] cursor-pointer transition-all duration-200;
+    }
 }
 

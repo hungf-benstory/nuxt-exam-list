@@ -44,7 +44,6 @@ onMounted(() => {
     naverLogin.getLoginStatus(function (status) {
       if (status) {
         const userInfo = naverLogin.user;
-
         if (userInfo) {
           toast.add({
             severity: "success",

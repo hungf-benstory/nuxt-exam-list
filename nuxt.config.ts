@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
   app: {
     head: {
-      title: 'My Nuxt App',
+      title: 'CBT Exam',
       meta: [
         { name: 'description', content: 'Ứng dụng Nuxt 3 với TailwindCSS, Pinia và PrimeVue' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
